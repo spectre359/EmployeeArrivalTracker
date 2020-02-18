@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "WebService\WebService.csproj", "{A9F27B12-6483-461E-BD5E-BF227AD2E66C}"
 EndProject
@@ -12,6 +12,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{906A7439-1
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonEmployeeGenerator", "JsonEmployeeGenerator\JsonEmployeeGenerator.csproj", "{4F88BA2B-455B-407A-89EC-2A28F2702E44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServices", "WebServices", "{471DE1AE-2E7A-42E1-9929-D2A9B9A67852}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comments", "Comments", "{D0F8CEB5-6749-4F44-8E53-011676CA009A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmployeeGenerator", "EmployeeGenerator", "{D831BD1A-77B9-47F1-9141-25AF4816AB77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reporting", "Reporting", "{F70D25D0-2AC5-45BD-8E98-AADB12436064}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporting.Services", "Reporting.Services\Reporting.Services.csproj", "{C40089E9-0AE6-4537-BC99-EB591C5F105C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporting.Contracts", "Reporting.Contracts\Reporting.Contracts.csproj", "{5CAE0321-A68F-4F79-B0AA-34F94CA6F076}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reporting.Web", "Reporting.Web\Reporting.Web.csproj", "{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +41,30 @@ Global
 		{4F88BA2B-455B-407A-89EC-2A28F2702E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F88BA2B-455B-407A-89EC-2A28F2702E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F88BA2B-455B-407A-89EC-2A28F2702E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C40089E9-0AE6-4537-BC99-EB591C5F105C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C40089E9-0AE6-4537-BC99-EB591C5F105C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C40089E9-0AE6-4537-BC99-EB591C5F105C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C40089E9-0AE6-4537-BC99-EB591C5F105C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAE0321-A68F-4F79-B0AA-34F94CA6F076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAE0321-A68F-4F79-B0AA-34F94CA6F076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAE0321-A68F-4F79-B0AA-34F94CA6F076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAE0321-A68F-4F79-B0AA-34F94CA6F076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A9F27B12-6483-461E-BD5E-BF227AD2E66C} = {471DE1AE-2E7A-42E1-9929-D2A9B9A67852}
+		{4F88BA2B-455B-407A-89EC-2A28F2702E44} = {D831BD1A-77B9-47F1-9141-25AF4816AB77}
+		{C40089E9-0AE6-4537-BC99-EB591C5F105C} = {F70D25D0-2AC5-45BD-8E98-AADB12436064}
+		{5CAE0321-A68F-4F79-B0AA-34F94CA6F076} = {F70D25D0-2AC5-45BD-8E98-AADB12436064}
+		{EDC28FC1-C34B-4CBE-8484-AAE591FDE75F} = {F70D25D0-2AC5-45BD-8E98-AADB12436064}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E780629-FDE6-4DD7-9275-7CE6B142EA21}
 	EndGlobalSection
 EndGlobal
