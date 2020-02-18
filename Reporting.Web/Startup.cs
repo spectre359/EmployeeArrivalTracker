@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
+using Reporting.Data.Context;
 using Reporting.Services;
 using Reporting.Services.Interfaces;
 
@@ -41,6 +43,10 @@ namespace Reporting.Web
             AddRefitService<IWebService>(services, Configuration.GetSection("Settings:WebServiceBaseUrl").Value);
             services.AddScoped<IWebServiceManager, WebServiceManager>();
             #endregion
+
+            services.AddDbContext<ReportingToolContext>(options =>
+                   options.UseSqlServer(
+                       Configuration.GetConnectionString("ReportingDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

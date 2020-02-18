@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Reporting.Contracts.Employee;
 using Reporting.Services.Interfaces;
 using Reporting.Web.Models;
 
@@ -26,7 +27,7 @@ namespace Reporting.Web.Controllers
             return View();
         }
 
-        public async Task<IActionResult> ReceiveArrivals()
+        public async Task<IActionResult> ReceiveArrivals([FromBody]List<EmployeeArrivalResponse> arrivals)
         {
             return Ok();
         }
