@@ -1,10 +1,9 @@
-﻿using Reporting.Contracts.Employee;
-using Reporting.Data.Context;
+﻿using Reporting.Data.Context;
 using Reporting.Data.Entities;
 using Reporting.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Reporting.Repositories
@@ -18,12 +17,12 @@ namespace Reporting.Repositories
             _context = context;
         }
 
-        public Task<bool> AddMany(List<Employee> employees)
+        public async Task AddMany(List<Employee> employees)
         {
-            throw new NotImplementedException();
+            await _context.AddRangeAsync(employees);
         }
 
-        public Task<List<Employee>> GetAll()
+        public Task<IQueryable<Employee>> GetAll()
         {
             throw new NotImplementedException();
         }

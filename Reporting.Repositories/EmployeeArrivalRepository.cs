@@ -3,6 +3,7 @@ using Reporting.Data.Entities;
 using Reporting.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +18,14 @@ namespace Reporting.Repositories
             _context = context;
         }
 
-        public Task<int> AddMany(List<EmployeeArrival> arrivals)
+        public async Task AddMany(List<EmployeeArrival> arrivals)
         {
-            throw new NotImplementedException();
+            await _context.AddRangeAsync(arrivals);
         }
 
-        public Task<List<EmployeeArrival>> GetAll()
+        public async Task<IQueryable<EmployeeArrival>> GetAll()
         {
-            throw new NotImplementedException();
+           return  _context.EmployeeArrivals;
         }
     }
 }
