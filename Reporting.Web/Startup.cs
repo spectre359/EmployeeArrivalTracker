@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Reporting.Data.Context;
+using Reporting.Repositories;
+using Reporting.Repositories.Interfaces;
 using Reporting.Services;
 using Reporting.Services.Interfaces;
 
@@ -42,6 +44,9 @@ namespace Reporting.Web
 
             AddRefitService<IWebService>(services, Configuration.GetSection("Settings:WebServiceBaseUrl").Value);
             services.AddScoped<IWebServiceManager, WebServiceManager>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IEmployeeArrivalRepository, EmployeeArrivalRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             #endregion
 
             services.AddDbContext<ReportingToolContext>(options =>

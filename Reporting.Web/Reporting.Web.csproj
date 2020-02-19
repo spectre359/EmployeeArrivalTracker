@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Reporting.Data\Reporting.Data.csproj" />
+    <ProjectReference Include="..\Reporting.Repositories\Reporting.Repositories.csproj" />
     <ProjectReference Include="..\Reporting.Services\Reporting.Services.csproj" />
   </ItemGroup>
 
