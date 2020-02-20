@@ -1,4 +1,5 @@
-﻿using Reporting.Data.Context;
+﻿using Reporting.Contracts.Misc;
+using Reporting.Data.Context;
 using Reporting.Data.Entities;
 using Reporting.Repositories.Interfaces;
 using System;
@@ -23,9 +24,17 @@ namespace Reporting.Repositories
             await _context.AddRangeAsync(arrivals);
         }
 
-        public async Task<IQueryable<EmployeeArrival>> GetAll()
+        public async Task<IQueryable<EmployeeArrival>> GetAll(SearchFilter filter = null)
         {
-           return  _context.EmployeeArrivals;
+            var qry = _context.EmployeeArrivals.Where(a => a.When.Date == (filter != null ? filter.When.Date : DateTime.Today.Date));
+            if (filter != null)
+            {
+                if (filter.EmployeeIds.Count > 0)
+                {
+                    qry = qry.Where(c => filter.EmployeeIds.Contains(c.EmployeeId));
+                }               
+            }
+            return qry;
         }
     }
 }

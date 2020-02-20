@@ -1,8 +1,179 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Reporting.Contracts.Misc.PaginatedList<Reporting.Contracts.ViewModels.EmployeeArrivalViewModel>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+@using Reporting.Contracts.Misc
+@{
+    var searchFilter = ViewData["SearchFilter"] as SearchFilter;
+}
+<style>
+    .disabled {
+    pointer-events: none;
+}
+</style>
+
+<div id="page">
+    <header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(images/img_bg_2.jpg)">
+        <div class="overlay"></div>
+        <div class="gtco-container">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-0 text-left">
+                    <div class="row row-mt-15em" style="margin-top: 10em !important;text-align: center;">
+                        <h1>Employee Arrivals Report</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="gtco-section">
+        <div class="gtco-container">
+            <div class="row">
+                <div class="col-md-12 col-md-push-1 animate-box" data-animate-effect="fadeInRight" style="left:auto;padding-bottom: 10px;">
+                    <div class="form-wrap col-md-10">
+                        <div class="tab">
+
+                            <div class="tab-content">
+                                <div class="tab-content-inner active" data-content="signup">
+                                    <h3>Filter results</h3>
+                                    <form asp-controller="Home" asp-action="Index" method="get">
+                                        <input type="hidden" asp-for="@searchFilter.SelectedSortOption" class="form-control">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label for="@searchFilter.Name">Name</label>
+                                                <input type="text" asp-for="@searchFilter.Name" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label for="@searchFilter.JobPosition">Job Position</label>
+                                                <input type="text" asp-for="@searchFilter.JobPosition" class="form-control">
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label for="@searchFilter.When">Date</label>
+                                                <input type="text" id="date-start" asp-for="@searchFilter.When" value="@searchFilter.When.ToString("MM/dd/yyyy")" class="form-control">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label for="fullname" style="visibility:hidden">Name</label>
+                                                <input type="submit" class="btn btn-primary form-control" value="Search">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-wrap col-md-2" style="border-left: 1px solid lightskyblue;">
+                        <div class="tab">
+                            <div class="tab-content">
+                                <div class="tab-content-inner active" data-content="signup">
+                                    <h3>Sort results</h3>
+                                    <form asp-controller="Home" asp-action="Index" method="get" id="sortForm">
+                                        <input type="hidden" asp-for="@searchFilter.When" value="@searchFilter.When.ToString("MM/dd/yyyy")" class="form-control">
+                                        <input type="hidden" asp-for="@searchFilter.JobPosition" class="form-control">
+                                        <input type="hidden" asp-for="@searchFilter.Name" class="form-control">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label for="fullname" style="visibility:hidden">Name</label>
+                                                <select class="form-control" id="SelectedSortOption" asp-for="@searchFilter.SelectedSortOption" asp-items="@searchFilter.SortOptions.Select(c => new SelectListItem { Value = c, Text = c }).ToList()"></select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @if (Model.Count > 0)
+                {
+                    <p>Page @Model.PageIndex of @Model.TotalPages</p>
+                    foreach (var empl in Model)
+                    {
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <a href="~/images/employee.jpg" class="fh5co-card-item image-popup">
+                                <figure>
+                                    <div class="overlay"><i class="ti-plus"></i></div>
+                                    <img src="~/images/employee.jpg" alt="Image" class="img-responsive">
+                                </figure>
+                                <div class="fh5co-text">
+                                    <h2>@empl.Name</h2>
+                                    <p> <b>@empl.JobPosition</b></p>
+                                    <p>The employee has arrived at @empl.When.ToShortTimeString()</p>
+                                </div>
+                            </a>
+                        </div>
+                    }
+
+                }
+                else
+                {
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        <div>No results found for this date</div>
+                        <br />
+                        <br />
+                    </div>
+                }
+
+
+            </div>
+
+
+
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+
+        <ul class="pagination">
+            <li class="@prevDisabled">
+                <a asp-action="Index" class="@prevDisabled" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-searchFilter="@searchFilter">
+                    <span>PREV</span>
+                </a>
+            </li>
+           
+            @for (var page = 1; page <= Model.TotalPages; page++)
+            {
+                if (page == Model.PageIndex ||
+                    (Model.PageIndex - page <= 2 && Model.PageIndex - page >= 0 )||
+                    (page - Model.PageIndex <=2 && page - Model.PageIndex >= 0))
+                {
+                    <li class="@(Model.PageIndex == page ? "active" : "")">
+                        <a asp-action="Index" asp-route-pageNumber="@(page)" asp-route-searchFilter="@searchFilter">
+                            @(page)
+                        </a>
+                    </li>
+                }
+               
+
+            }
+            <li class="@nextDisabled">
+                <a asp-action="Index" class="@nextDisabled" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-searchFilter="@searchFilter">
+                    <span>NEXT</span>
+                </a>
+            </li>
+        </ul>
+            </div>
+        </div>
+    </div>
+
+
+<div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $("#SelectedSortOption").change(function () {
+        $(".gtco-loader").show();
+        $("#sortForm").submit();        
+    });
+</script>

@@ -1,4 +1,5 @@
-﻿using Reporting.Data.Entities;
+﻿using Reporting.Contracts.Misc;
+using Reporting.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Reporting.Repositories.Interfaces
     public interface IEmployeeArrivalRepository
     {
         Task AddMany(List<EmployeeArrival> arrivals);
-        Task<IQueryable<EmployeeArrival>> GetAll();
+        Task<IQueryable<EmployeeArrival>> GetAll(SearchFilter filter = null);
     }
 }

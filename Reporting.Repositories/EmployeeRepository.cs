@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Reporting.Contracts.Misc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Reporting.Repositories
 {
@@ -22,9 +25,29 @@ namespace Reporting.Repositories
             await _context.AddRangeAsync(employees);
         }
 
-        public Task<IQueryable<Employee>> GetAll()
+        public async Task<IQueryable<Employee>> GetAll(SearchFilter filter)
         {
-            throw new NotImplementedException();
+            var qry = _context.Employees.Where(c => filter.EmployeeIds.Any(e => e == c.Id));
+
+            if (!string.IsNullOrEmpty(filter.Name))
+            {
+                if (Regex.IsMatch(filter.Name, @"^\w+\s\w+$"))
+                {
+                    var splittedName = filter.Name.Split(' ');
+                    qry = qry.Where(c => c.Name.ToLowerInvariant().Equals(splittedName[0].ToLowerInvariant()) && c.SurName.ToLowerInvariant().Equals(splittedName[1].ToLowerInvariant()));
+                }
+                else
+                {
+                    qry = qry.Where(c => c.Name.ToLowerInvariant().Contains(filter.Name.ToLowerInvariant()) || c.SurName.ToLowerInvariant().Equals(filter.Name.ToLowerInvariant()));
+                }
+
+            }
+            if (!string.IsNullOrEmpty(filter.JobPosition))
+            {
+                qry = qry.Where(c => c.Role.ToLowerInvariant().Contains(filter.JobPosition.ToLowerInvariant()));
+            }
+
+            return qry;
         }
     }
 }

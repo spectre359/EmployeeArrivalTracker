@@ -21,15 +21,11 @@ namespace Reporting.Data.Migrations
 
             modelBuilder.Entity("Reporting.Data.Entities.Employee", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id");
 
                     b.Property<int>("Age");
 
                     b.Property<string>("Email");
-
-                    b.Property<int?>("ManagerId");
 
                     b.Property<string>("Name");
 
@@ -37,11 +33,7 @@ namespace Reporting.Data.Migrations
 
                     b.Property<string>("SurName");
 
-                    b.Property<string>("TeamsData");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
 
                     b.ToTable("Employees");
                 });
@@ -58,24 +50,20 @@ namespace Reporting.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId");
-
                     b.ToTable("EmployeeArrivals");
                 });
 
-            modelBuilder.Entity("Reporting.Data.Entities.Employee", b =>
+            modelBuilder.Entity("Reporting.Data.Entities.HistoryAPICallEvent", b =>
                 {
-                    b.HasOne("Reporting.Data.Entities.Employee", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId");
-                });
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Reporting.Data.Entities.EmployeeArrival", b =>
-                {
-                    b.HasOne("Reporting.Data.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.Property<DateTime>("LastCallAt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HistoryEvents");
                 });
 #pragma warning restore 612, 618
         }

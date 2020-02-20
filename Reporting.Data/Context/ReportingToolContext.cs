@@ -15,5 +15,6 @@ namespace Reporting.Data.Context
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EmployeeArrival> EmployeeArrivals { get; set; }
+        public DbSet<HistoryAPICallEvent> HistoryEvents { get; set; }
     }
 }

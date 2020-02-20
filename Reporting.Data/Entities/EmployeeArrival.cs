@@ -8,11 +8,10 @@ namespace Reporting.Data.Entities
 {
     public class EmployeeArrival
     {
-        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int EmployeeId { get; set; }
         public System.DateTime When { get; set; }
-        [ForeignKey("EmployeeId")]
-        public virtual Employee Employee { get; set; }
+       
     }
 }

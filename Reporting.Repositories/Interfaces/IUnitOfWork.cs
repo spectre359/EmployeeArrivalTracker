@@ -9,6 +9,7 @@ namespace Reporting.Repositories.Interfaces
     {
         IEmployeeRepository Employees { get; }
         IEmployeeArrivalRepository Arrivals { get; }
+        IHistoryEventRepository HistoryEvents { get; }
         Task SaveAsync();
     }
 }
