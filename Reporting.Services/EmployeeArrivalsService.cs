@@ -4,6 +4,7 @@ using Reporting.Contracts.ViewModels;
 using Reporting.Data.Entities;
 using Reporting.Repositories.Interfaces;
 using Reporting.Services.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +16,11 @@ namespace Reporting.Services
     public class EmployeeArrivalsService : IEmployeeArrivalsService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public EmployeeArrivalsService(IUnitOfWork unitOfWork)
+        private readonly ILogger _logger;
+        public EmployeeArrivalsService(IUnitOfWork unitOfWork, ILogger logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
         public async Task<bool> AddMany(List<EmployeeArrivalRequest> arrivals)
         {
@@ -31,7 +33,7 @@ namespace Reporting.Services
             }
             catch (Exception ex)
             {
-
+                _logger.Error(ex, $"Saving arrivals failed. DateOfEvent: {DateTime.UtcNow}");
             }
             return true;
         }
@@ -41,6 +43,7 @@ namespace Reporting.Services
             var arrivals = await _unitOfWork.Arrivals.GetAll(searchFilter);
             if (arrivals.Count() == 0)
             {
+                _logger.Information( $"No arrivals found for Date: {searchFilter.When}");
                 return await ConstructViewModels(arrivals, new List<Employee>().AsQueryable(), pageNumber, pageSize, 0);
             }
             if (searchFilter == null)

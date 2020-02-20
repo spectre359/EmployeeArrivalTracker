@@ -10,6 +10,7 @@ using Reporting.Contracts.Misc;
 using Reporting.Contracts.Token;
 using Reporting.Services.Interfaces;
 using Reporting.Web.Models;
+using Serilog;
 
 namespace Reporting.Web.Controllers
 {
@@ -19,14 +20,19 @@ namespace Reporting.Web.Controllers
         private readonly ISettings _settings;
         private readonly IEmployeeArrivalsService _employeeArrivalsService;
         private readonly IHistoryEventsService _historyEventsService;
+        private readonly ILogger _logger;
         private static TokenResponse _token;
         private static SearchFilter _filter;
-        public HomeController(IWebServiceManager webServiceManager, ISettings settings, IEmployeeArrivalsService employeeArrivalsService, IHistoryEventsService historyEventsService)
+        public HomeController(IWebServiceManager webServiceManager, ISettings settings,
+            IEmployeeArrivalsService employeeArrivalsService,
+            IHistoryEventsService historyEventsService,
+            ILogger logger)
         {
             _webServiceManager = webServiceManager;
             _settings = settings;
             _employeeArrivalsService = employeeArrivalsService;
             _historyEventsService = historyEventsService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(int? pageNumber, SearchFilter searchFilter = null)
@@ -41,6 +47,7 @@ namespace Reporting.Web.Controllers
                 string date = (DateTime.Today).ToString("yyyy-MM-dd");
                 var result = await _webServiceManager.Subscribe(date, callback);
                 _token = result;
+                _logger.Information($"WebService called. DateOfEvent: {DateTime.UtcNow}");
                 //return an interesting waiting view, until the arrivals have been received and saved to the db
                 return View("GeneratingArrivals");
             }
@@ -75,6 +82,7 @@ namespace Reporting.Web.Controllers
             }
             else
             {
+                _logger.Error($"Validating token failed. DateOfEvent: {DateTime.UtcNow}");                
                 return BadRequest("Token error");
             }
 
@@ -83,6 +91,16 @@ namespace Reporting.Web.Controllers
         public async Task<bool> CheckIfReady()
         {
             return await _historyEventsService.EventExists();
+        }
+
+        //return a not so scary error screen
+        [HttpGet]
+        [Route("/Home/Error/{statusCode}/{message}")]
+        public async Task<IActionResult> Error(int statusCode, string message)
+        {           
+            ViewBag.StatusCode = statusCode;   
+            ViewBag.Error = message;
+            return View();
         }
     }
 }

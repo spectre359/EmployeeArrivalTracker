@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using Reporting.Repositories;
 using Reporting.Repositories.Interfaces;
 using Reporting.Services;
 using Reporting.Services.Interfaces;
+using Serilog;
 using System;
 
 namespace Reporting.Web
@@ -39,12 +41,7 @@ namespace Reporting.Web
             services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
-            {
-                // Set a short timeout for easy testing.
-                //options.Cookie.Name = ".Project.Session";
-                //options.IdleTimeout = TimeSpan.FromMinutes(30);
-                //options.Cookie.HttpOnly = true;
-                // Make the session cookie essential
+            {               
                 options.Cookie.IsEssential = true;
             });
 
@@ -63,6 +60,8 @@ namespace Reporting.Web
             services.AddScoped<IHistoryEventRepository, HistoryEventRepository>();
             services.AddScoped<IHistoryEventsService, HistoryEventsService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddSingleton(CreateLogger());
             #endregion
 
             services.AddDbContext<ReportingToolContext>(options =>
@@ -121,6 +120,36 @@ namespace Reporting.Web
             {                
                 cfg.CreateMap<EmployeeArrival, EmployeeArrivalRequest>().ReverseMap();
             });
+        }
+
+        private ILogger CreateLogger()
+        {
+            var configuration = new LoggerConfiguration();
+
+            configuration = configuration.MinimumLevel.Debug();
+
+            configuration = configuration.WriteTo.RollingFile("_log-{Date}.txt", fileSizeLimitBytes: (100 * 1024 * 1024));
+
+
+            return configuration
+                .Enrich.FromLogContext()
+                .Enrich.WithProperty("Application", "Reporting.Web")
+
+                .CreateLogger();
+        }
+
+        public static Action<IApplicationBuilder> HandleException(IApplicationBuilder app)
+        {
+            return appBuilder =>
+            {
+                appBuilder.Run(async context =>
+                {
+                    var logger = app.ApplicationServices.GetService(typeof(ILogger)) as ILogger;
+                    var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    logger.Error(exceptionHandlerFeature.Error.Message);
+                    context.Response.Redirect($"/Home/Error/{context.Response.StatusCode}/{exceptionHandlerFeature.Error.Message}");
+                });
+            };
         }
     }
 }
