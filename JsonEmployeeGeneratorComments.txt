@@ -1,0 +1,57 @@
+
+***************************************************************
+This whole code should be scrapped. It can be replaced with recommendations further below.
+
+ var jsonFile = File.CreateText("employees.json");
+            jsonFile.WriteLine("[");
+
+            for (int i = 0; i < employees.Count; ++i)
+            {
+                var jsonEmployee = employees[i];
+                string str =
+                    "{{\"Id\":{7},\"ManagerId\":{0},\"Age\":{1},\"Teams\":[{2}],\"Role\":\"{3}\",\"Email\":\"{4}\",\"SurName\":\"{5}\",\"Name\":\"{6}\"}}";
+                if (i != employees.Count - 1)
+                    str += ",";
+                var formattedEmployeed = string.Format(str,
+                    jsonEmployee.ManagerId.HasValue ? jsonEmployee.ManagerId.ToString() : "null",
+                    jsonEmployee.Age,
+                    string.Join(",", jsonEmployee.Teams.Select(x => "\"" + x + "\"")),
+                    jsonEmployee.Role,
+                    jsonEmployee.Email,
+                    jsonEmployee.SurName,
+                    jsonEmployee.Name,
+                    jsonEmployee.Id);
+                jsonFile.WriteLine(formattedEmployeed);
+            }
+            jsonFile.WriteLine("]");
+*******************************************************
+Replace recommendation 1:
+
+
+string json = JsonConvert.SerializeObject(employees);
+
+//write string to file
+System.IO.File.WriteAllText(@"{path}", json);
+-------------------------------
+Replace recommendation 2:
+
+using (StreamWriter file = File.CreateText(@"{path}"))
+{
+     JsonSerializer serializer = new JsonSerializer();     
+     serializer.Serialize(file, employees);
+}
+
+As for the first part of the code, you can either convert it to xml and then deserialize it or use something like:
+
+
+ string[] employeeData = File.ReadAllLines(file);
+
+    foreach (var item in employeeData)
+    {
+        string[] proeprties = item.Split(' ');
+        string Name = properties[0];
+        string LastName = properties[1];
+		string Email = properties[2];
+        ...
+    }
+

@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServices", "WebServices"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comments", "Comments", "{D0F8CEB5-6749-4F44-8E53-011676CA009A}"
 	ProjectSection(SolutionItems) = preProject
+		JsonEmployeeGeneratorComments.txt = JsonEmployeeGeneratorComments.txt
 		MySolutionComments.txt = MySolutionComments.txt
 		WebServiceRecommendations.txt = WebServiceRecommendations.txt
 	EndProjectSection
