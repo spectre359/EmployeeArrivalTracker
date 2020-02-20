@@ -1,0 +1,12 @@
+**************************************************************************************************
+1. In a Live application i would cache the daily arrivals for less db trips and faster filtering.*
+2. The reason why i am storing the Token in a static variable is that due to GDPR in             *
+.Net Core 2.1+ the session and everything related to it is made harder to use.                   *
+You should present the user with the option of accepting cookies (you can turn off this          *
+requirement, but it seems to like it still does want acceptance) and this does not fit the case. *
+3. I will provide a backup of my db, but if you want to generate it yourself, after using		 *
+update-database, please start the EmployeeSeeder console app. It will fill the db with the       *
+employees from the json file. After that start the web application as usual (together with the   *
+WebService).                                                                                     *
+4. Also there are 2 connection strings (one commented) for SQL Server and SQL Express.           *
+**************************************************************************************************

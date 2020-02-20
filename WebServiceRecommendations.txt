@@ -1,0 +1,9 @@
+*******************************************************************
+1. You should add validation for the date and callback parameters.*
+If either of them is something else, it will throw an exception.  *
+You may use FluentValidation since it's easy to use but powerful. *
+Atleast you shouldn't use ParseExact.                             *
+2. The StreamReader should be in a using statement to be sure that*
+it will be disposed and the file will be closed	.			      * 
+3. You should log the exceptions.                                 *
+*******************************************************************

@@ -16,6 +16,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServices", "WebServices", "{471DE1AE-2E7A-42E1-9929-D2A9B9A67852}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comments", "Comments", "{D0F8CEB5-6749-4F44-8E53-011676CA009A}"
+	ProjectSection(SolutionItems) = preProject
+		MySolutionComments.txt = MySolutionComments.txt
+		WebServiceRecommendations.txt = WebServiceRecommendations.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmployeeGenerator", "EmployeeGenerator", "{D831BD1A-77B9-47F1-9141-25AF4816AB77}"
 EndProject

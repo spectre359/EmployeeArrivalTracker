@@ -71,9 +71,8 @@ namespace Reporting.Web.Controllers
 
         public async Task<IActionResult> ReceiveArrivals([FromBody]List<EmployeeArrivalRequest> arrivals)
         {
-            //receive arrivals and check token
-            var requestToken = Request.Headers["X-Fourth-Token"];
-            if (!string.IsNullOrEmpty(requestToken) && (_token.Token.Equals(requestToken)))
+            //receive arrivals and check token            
+            if (Request.Headers.ContainsKey("X-Fourth-Token") && _token.Token.Equals(Request.Headers["X-Fourth-Token"]))
             {
                 //if valid, save to db and create history event for reference
                 await _employeeArrivalsService.AddMany(arrivals);
